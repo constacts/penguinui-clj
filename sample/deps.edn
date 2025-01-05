@@ -1,0 +1,11 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        ring/ring-core {:mvn/version "1.13.0"}
+        ring/ring-devel {:mvn/version "1.13.0"}
+        ring/ring-jetty-adapter {:mvn/version "1.13.0"}
+        hiccup/hiccup {:mvn/version "2.0.0-RC4"}
+        constacts/penguin-clj {:local/root ".."}}
+ :aliases
+ {:run-m {:main-opts ["-m" "sample.core"]}
+  :build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.5"}}
+          :ns-default build}}}
