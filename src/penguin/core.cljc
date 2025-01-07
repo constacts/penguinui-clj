@@ -20,14 +20,6 @@
             {}
             opts)))
 
-(def button-opts
-  {:type [:default :outline :ghost :fab]
-   :color [:primary :secondary :alternate :inverse :info :danger :warning :success]
-   :size [:md :sm :lg :xl]
-   :icon [nil :icon-plus :icon-loading]
-   :icon-position [:icon-left :icon-right]
-   :disabled [:enabled :disabled]})
-
 (defn- parse-opts [available-opts opts]
   (let [opts' (cond
                 (keyword? opts) (parse-list-opts available-opts (split-inline-opts opts))
@@ -35,7 +27,6 @@
                 (map? opts) opts
                 :else (throw (ex-info "opts must be a keyword or a map" {:opts opts})))]
     (merge (default-opts available-opts) opts')))
-
 
 (def color-style
   {:primary {:bg "bg-black"
@@ -94,6 +85,30 @@
     :lg "text-base"
     :xl "text-lg"))
 
+(def plus-icon
+  [:svg {:aria-hidden "true"
+         :xmlns "http://www.w3.org/2000/svg"
+         :viewbox "0 0 24 24"
+         :class "size-5 fill-neutral-100 dark:fill-black"
+         :fill "currentColor"}
+   [:path {:fill-rule "evenodd"
+           :d "M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+           :clip-rule "evenodd"}]])
+
+(def loading-icon
+  [:svg {:aria-hidden "true"
+         :xmlns "http://www.w3.org/2000/svg"
+         :viewbox "0 0 24 24" :class "size-5 animate-spin motion-reduce:animate-none fill-neutral-100 dark:fill-black"}
+   [:path {:opacity "0.25"
+           :d "M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"}]
+   [:path {:d "M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"}]])
+
+(def button-opts
+  {:type [:default :outline :ghost :fab]
+   :color [:primary :secondary :alternate :inverse :info :danger :warning :success]
+   :size [:md :sm :lg :xl]
+   :disabled [:enabled :disabled]})
+
 ;; TODO: add dark mode
 (defn button
   "Buttons
@@ -106,46 +121,43 @@
    (button :default.primary.sm.icon.disabled \"Primary\")
 
    available opts:
-   - color: primary, secondary, alternate, inverse, info, danger, warning, success
-   - size: sm, md, lg, xl
-   - type: default, outline, ghost
-   - preset icon: loading
-   - disabled: enabled, disabled"
-  ([child]
-   (button (default-opts button-opts) child))
-  ([opts child]
-   (let [{:keys [type color size icon icon-position disabled]}
-         (parse-opts button-opts opts)]
-     [:button {:type "button"
-               :disabled (= disabled :disabled)
-               :class
-               (str/join " "
-                         ["cursor-pointer"
-                          "whitespace-nowrap"
-                          (when (= type :outline) "bg-transparent")
-                          "rounded-md"
-                          (when (= type :outline) "border")
-                          (when (= type :outline) (get-in color-style [color :border]))
-                          (when (= type :default) (get-in color-style [color :bg]))
-                          "px-4"
-                          "py-2"
-                          (font-size size)
-                          "font-medium"
-                          "tracking-wide"
-                          (if (= type :outline)
-                            (get-in color-style [color :text])
-                            (get-in color-style [color :text-with-bg]))
-                          "transition"
-                          "hover:opacity-75"
-                          "text-center"
-                          "focus-visible:outline"
-                          "focus-visible:outline-2"
-                          "focus-visible:outline-offset-2"
-                          (if (= type :outline)
-                            (str " focus-visible:" (get-in color-style [color :bordered-focus-outline]))
-                            (str " focus-visible:" (get-in color-style [color :focus-outline])))
-                          "active:opacity-100"
-                          "active:outline-offset-0"
-                          "disabled:opacity-75"
-                          "disabled:cursor-not-allowed"])}
-      child])))
+   "
+  [props opts & children]
+  (let [{:keys [type color size disabled]}
+        (parse-opts button-opts opts)]
+    (into [:button (merge
+                    {:type "button"
+                     :disabled (= disabled :disabled)
+                     :class
+                     (str/join " "
+                               ["cursor-pointer"
+                                "inline-flex justify-center items-center gap-2"
+                                (when (= type :fab) "aspect-square")
+                                "whitespace-nowrap"
+                                (when (= type :outline) "bg-transparent")
+                                "rounded-md"
+                                (when (= type :outline) "border")
+                                (when (= type :outline) (get-in color-style [color :border]))
+                                (when (= type :default) (get-in color-style [color :bg]))
+                                "px-4"
+                                "py-2"
+                                (font-size size)
+                                "font-medium"
+                                "tracking-wide"
+                                (if (or (= type :outline) (= type :ghost))
+                                  (get-in color-style [color :text])
+                                  (get-in color-style [color :text-with-bg]))
+                                "transition"
+                                "hover:opacity-75"
+                                "text-center"
+                                "focus-visible:outline"
+                                "focus-visible:outline-2"
+                                "focus-visible:outline-offset-2"
+                                (if (= type :outline)
+                                  (str " focus-visible:" (get-in color-style [color :bordered-focus-outline]))
+                                  (str " focus-visible:" (get-in color-style [color :focus-outline])))
+                                "active:opacity-100"
+                                "active:outline-offset-0"
+                                "disabled:opacity-75"
+                                "disabled:cursor-not-allowed"])}
+                    props)] children)))
