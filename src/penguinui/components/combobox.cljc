@@ -1,4 +1,6 @@
-(ns penguin.components.combobox)
+(ns penguinui.components.combobox
+  (:require
+   [penguinui.components.icon :refer [check-icon open-arrow-icon]]))
 
 (def x-data
   "{
@@ -24,29 +26,6 @@
          }
      },
    }")
-
-(def open-arrow-icon
-  [:svg {:xmlns "http://www.w3.org/2000/svg"
-         :viewbox "0 0 20 20"
-         :fill "currentColor"
-         :class "size-5"}
-   [:path {:fill-rule "evenodd"
-           :d "M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-           :clip-rule "evenodd"}]])
-
-(def check-icon
-  [:svg {:x-show "selectedOption == item"
-         :stroke "currentColor"
-         :aria-hidden "true"
-         :fill "none"
-         :viewbox "0 0 24 24"
-         :xmlns "http://www.w3.org/2000/svg"
-         :x-cloak true
-         :stroke-width "2"
-         :class "size-4"}
-   [:path {:stroke-linecap "round"
-           :stroke-linejoin "round"
-           :d "m4.5 12.75 6 6 9-13.5"}]])
 
 (defn combobox
   ([]

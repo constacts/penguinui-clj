@@ -2,8 +2,12 @@
   (:gen-class)
   (:require
    [hiccup2.core :refer [html]]
-   [penguin.components.combobox :refer [combobox]]
-   [penguin.core :refer [button loading-icon plus-icon]]
+   [penguinui.components.combobox :refer [combobox]]
+   [penguinui.components.icon :refer [icon1 icon2 icon3 icon4 icon5 icon6
+                                      icon7 payment-icon penguin-logo settings-icon sign-out-icon
+                                      person-icon loading-icon penguin-logo plus-icon]]
+   [penguinui.components.sidebar :refer [sidebar]]
+   [penguinui.core :refer [button]]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.reload :refer [wrap-reload]]
    [ring.util.response :refer [content-type response]]))
@@ -117,14 +121,34 @@
     [:script {:src "https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js" :defer true}]
     [:script {:src "//unpkg.com/alpinejs" :defer true}]]
    [:body {:style "font-family: 'Lato', sans-serif;"}
-    [:div.mx-auto.max-w-screen-md.pt-12.flex.flex-col.gap-12
-     (buttons)
-     (outline-buttons)
-     (ghost-buttons)
-     (button-with-icon)
-     (button-with-icon-right)
-     (button-with-icon-loading)
-     (comboboxes)]]])
+    (sidebar
+     {:logo {:link "/" :el penguin-logo}
+      :side-menu [{:link "#" :icon icon1 :title "Buttons"}
+                  {:link "#" :icon icon2 :title "Marketing" :active? true}
+                  {:link "#" :icon icon3 :title "Sales"}
+                  {:link "#" :icon icon4 :title "Performance"}
+                  {:link "#" :icon icon5 :title "Referrals"}
+                  {:link "#" :icon icon6 :title "Licenses"}
+                  {:link "#" :icon icon7 :title "Settings"}]
+      :breadcrumb {:items [{:link "/" :title "Home"}
+                           {:title "Buttons"}]
+                   :separator :slash}
+      :profile-menu {:groups [{:items [{:link "#" :icon person-icon :title "Profile"}]}
+                              {:items [{:link "#" :icon settings-icon :title "Settings"}
+                                       {:link "#" :icon payment-icon :title "Payments"}]}
+                              {:items [{:link "#" :icon sign-out-icon :title "Sign Out"}]}]}
+      :profile {:avatar-url "https://penguinui.s3.amazonaws.com/component-assets/avatar-7.webp"
+                :name "Alex Martinez"
+                :username "@alexmartinez"}
+      :body
+      [:div.mx-auto.max-w-screen-md.pt-12.flex.flex-col.gap-12
+       (buttons)
+       (outline-buttons)
+       (ghost-buttons)
+       (button-with-icon)
+       (button-with-icon-right)
+       (button-with-icon-loading)
+       (comboboxes)]})]])
 
 (defn app [_]
   (-> view html str response (content-type "text/html")))

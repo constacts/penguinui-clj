@@ -4,10 +4,10 @@
             [clojure.tools.build.api :as b]
             [deps-deploy.deps-deploy :as dd]))
 
-(def lib 'net.clojars.constacts/penguin-clj)
+(def lib 'constacts/penguinui-clj)
 (def version "0.1.0-SNAPSHOT")
-#_ ; alternatively, use MAJOR.MINOR.COMMITS:
-(def version (format "1.0.%s" (b/git-count-revs nil)))
+#_; alternatively, use MAJOR.MINOR.COMMITS:
+  (def version (format "1.0.%s" (b/git-count-revs nil)))
 (def class-dir "target/classes")
 
 (defn test "Run all the tests." [opts]
@@ -25,7 +25,7 @@
 
 (defn- pom-template [version]
   [[:description "FIXME: my new library."]
-   [:url "https://github.com/constacts/penguin-clj"]
+   [:url "https://github.com/constacts/penguinui-clj"]
    [:licenses
     [:license
      [:name "Eclipse Public License"]
@@ -34,9 +34,9 @@
     [:developer
      [:name "Eunmin"]]]
    [:scm
-    [:url "https://github.com/constacts/penguin-clj"]
-    [:connection "scm:git:https://github.com/constacts/penguin-clj.git"]
-    [:developerConnection "scm:git:ssh:git@github.com:constacts/penguin-clj.git"]
+    [:url "https://github.com/constacts/penguinui-clj"]
+    [:connection "scm:git:https://github.com/constacts/penguinui-clj.git"]
+    [:developerConnection "scm:git:ssh:git@github.com:constacts/penguinui-clj.git"]
     [:tag (str "v" version)]]])
 
 (defn- jar-opts [opts]
