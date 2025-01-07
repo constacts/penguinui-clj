@@ -111,20 +111,7 @@
    [:h1.text-2xl.font-bold "Combobox"]
    (combobox "Industry")])
 
-(def buttons-view
-  [:div.flex.flex-col.gap-12
-   (buttons)
-   (outline-buttons)
-   (ghost-buttons)
-   (button-with-icon)
-   (button-with-icon-right)
-   (button-with-icon-loading)
-   (comboboxes)])
-
-(def test-page
-  [:h1 "TEST!"])
-
-(defn layout [body]
+(defn layout [title body]
   [:html
    [:head
     [:meta {:charset "UTF-8"}]
@@ -142,16 +129,12 @@
    [:body {:style "font-family: 'Lato', sans-serif;"}
     (sidebar
      {:logo {:link "/" :el penguin-logo}
-      :side-menu [{:link "/buttons" :icon icon1 :title "Buttons"}
-                  {:link "/test" :icon icon2 :title "Marketing" :active? true}
-                  {:link "#" :icon icon3 :title "Sales"}
-                  {:link "#" :icon icon4 :title "Performance"}
-                  {:link "#" :icon icon5 :title "Referrals"}
-                  {:link "#" :icon icon6 :title "Licenses"}
-                  {:link "#" :icon icon7 :title "Settings"}]
-      :breadcrumb {:items [{:link "/" :title "Home"}
-                           {:title "Buttons"}]
-                   :separator :slash}
+      :selected-menu-title title
+      :side-menu [{:link "/ai-interface" :icon icon2 :title "AI Interface"}
+                  {:link "/display" :icon icon3 :title "Display"}
+                  {:link "/feedback" :icon icon4 :title "Feedback"}
+                  {:link "/inputs" :icon icon5 :title "Input"}
+                  {:link "/navigation" :icon icon6 :title "Navigation"}]
       :profile-menu {:groups [{:items [{:link "#" :icon person-icon :title "Profile"}]}
                               {:items [{:link "#" :icon settings-icon :title "Settings"}
                                        {:link "#" :icon payment-icon :title "Payments"}]}
@@ -161,16 +144,44 @@
                 :username "@alexmartinez"}
       :body body})]])
 
-(defn render [req view]
+(defn render [req title view]
   (-> (if (get-in req [:headers "hx-request"])
         view
-        (layout view))
+        (layout title view))
       html str response (content-type "text/html")))
 
+(def home-page
+  [:h1 "Home"])
+
+(def ai-interface-page
+  [:h1 "AI Interface"])
+
+(def display-page
+  [:h1 "Display"])
+
+(def feedback-page
+  [:h1 "Feedback"])
+
+(def input-page
+  [:div.flex.flex-col.gap-12
+   (buttons)
+   (outline-buttons)
+   (ghost-buttons)
+   (button-with-icon)
+   (button-with-icon-right)
+   (button-with-icon-loading)
+   (comboboxes)])
+
+(def navigation-page
+  [:h1 "Navigation"])
+
 (defroutes app
-  (GET "/" req (render req buttons-view))
-  (GET "/test" req (render req test-page))
-  (GET "/buttons" req (render req buttons-view))
+  (GET "/" req (render req "Home" home-page))
+  (GET "/ai-interface" req (render req "AI Interface" ai-interface-page))
+  (GET "/display" req (render req "Display" display-page))
+  (GET "/feedback" req (render req "Feedback" feedback-page))
+  (GET "/inputs" req (render req "Input" input-page))
+  (GET "/navigation" req (render req "Navigation" navigation-page))
   (route/not-found "Not Found"))
 
 (defn -main []

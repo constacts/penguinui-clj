@@ -9,14 +9,17 @@
   [:button {:hx-get link
             :hx-push-url "true"
             :hx-target "#body"
+            :x-data (str "{ active() { return currentMenuTitle === '" title "' } }")
+            "@click" (str "currentMenuTitle = '" title "'")
+            ":class" "active() ? 'bg-black/10' : 'hover:bg-black/5 hover:text-neutral-900'"
             :class
             (str/join " "
                       ["flex items-center rounded-md gap-2 px-2 py-1.5 text-sm font-medium text-neutral-600 underline-offset-2 focus-visible:underline focus:outline-none dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white"
                        (if active? "bg-black/10" "hover:bg-black/5 hover:text-neutral-900")])}
    icon
    [:span title]
-   (when active?
-     [:span {:class "sr-only"} "active"])])
+   [:div {:x-show "active()"}
+    [:span {:class "sr-only"} "active"]]])
 
 (defn search []
   [:div {:class "relative my-4 flex w-full max-w-xs flex-col gap-1 text-neutral-600 dark:text-neutral-300"}
@@ -92,15 +95,15 @@
   [:nav {:class "sticky top-0 z-10 flex items-center justify-between border-b border-neutral-300 bg-neutral-50 px-4 py-2 dark:border-neutral-700 dark:bg-neutral-900"
          :aria-label "top navibation bar"}
    (sidemenu-toggle-button)
-   (breadcrumb (:breadcrumb opts))
+   (breadcrumb {:items [{:title [:span {:x-text "currentMenuTitle"}]}]})
    [:div {:x-data "{ userDropdownIsOpen: false }"
           :class "relative"
           :x-on:keydown.esc.window "userDropdownIsOpen = false"}
     (profile (:profile opts))
     (profile-menu (:profile-menu opts))]])
 
-(defn sidebar [{:keys [body logo breadcrumb profile profile-menu] :as opts}]
-  [:div {:x-data "{ sidebarIsOpen: false }" :class "relative flex w-full flex-col md:flex-row"}
+(defn sidebar [{:keys [body logo selected-menu-title profile profile-menu] :as opts}]
+  [:div {:x-data (str "{ sidebarIsOpen: false, currentMenuTitle: '" selected-menu-title "' }") :class "relative flex w-full flex-col md:flex-row"}
    [:a {:class "sr-only" :href "#main-content"}
     "skip to the main content"]
    [:div {:x-cloak true
@@ -112,8 +115,7 @@
    (side-menu {:logo logo
                :items (:side-menu opts)})
    [:div {:class "h-svh w-full overflow-y-auto bg-white dark:bg-neutral-950"}
-    (navbar {:breadcrumb breadcrumb
-             :profile profile
+    (navbar {:profile profile
              :profile-menu profile-menu})
     [:div {:id "main-content" :class "p-4"}
      [:div#body {:class "overflow-y-auto"}
