@@ -2,6 +2,8 @@
   (:gen-class)
   (:require
    [hiccup2.core :refer [html]]
+   [compojure.core :refer [defroutes GET]]
+   [compojure.route :as route]
    [penguinui.components.combobox :refer [combobox]]
    [penguinui.components.icon :refer [icon1 icon2 icon3 icon4 icon5 icon6
                                       icon7 payment-icon penguin-logo settings-icon sign-out-icon
@@ -10,6 +12,7 @@
    [penguinui.core :refer [button]]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.reload :refer [wrap-reload]]
+   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [ring.util.response :refer [content-type response]]))
 
 (defn buttons []
@@ -108,7 +111,20 @@
    [:h1.text-2xl.font-bold "Combobox"]
    (combobox "Industry")])
 
-(def view
+(def buttons-view
+  [:div.flex.flex-col.gap-12
+   (buttons)
+   (outline-buttons)
+   (ghost-buttons)
+   (button-with-icon)
+   (button-with-icon-right)
+   (button-with-icon-loading)
+   (comboboxes)])
+
+(def test-page
+  [:h1 "TEST!"])
+
+(defn layout [body]
   [:html
    [:head
     [:meta {:charset "UTF-8"}]
@@ -117,14 +133,17 @@
     [:link {:rel "preconnect" :href "https://fonts.gstatic.com" :crossorigin true}]
     [:link {:href "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             :rel "stylesheet"}]
+    [:script {:src "https://unpkg.com/htmx.org@2.0.4"
+              :integrity "sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+              :crossorigin "anonymous"}]
     [:script {:src "https://cdn.tailwindcss.com"}]
     [:script {:src "https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js" :defer true}]
     [:script {:src "//unpkg.com/alpinejs" :defer true}]]
    [:body {:style "font-family: 'Lato', sans-serif;"}
     (sidebar
      {:logo {:link "/" :el penguin-logo}
-      :side-menu [{:link "#" :icon icon1 :title "Buttons"}
-                  {:link "#" :icon icon2 :title "Marketing" :active? true}
+      :side-menu [{:link "/buttons" :icon icon1 :title "Buttons"}
+                  {:link "/test" :icon icon2 :title "Marketing" :active? true}
                   {:link "#" :icon icon3 :title "Sales"}
                   {:link "#" :icon icon4 :title "Performance"}
                   {:link "#" :icon icon5 :title "Referrals"}
@@ -140,18 +159,23 @@
       :profile {:avatar-url "https://penguinui.s3.amazonaws.com/component-assets/avatar-7.webp"
                 :name "Alex Martinez"
                 :username "@alexmartinez"}
-      :body
-      [:div.mx-auto.max-w-screen-md.pt-12.flex.flex-col.gap-12
-       (buttons)
-       (outline-buttons)
-       (ghost-buttons)
-       (button-with-icon)
-       (button-with-icon-right)
-       (button-with-icon-loading)
-       (comboboxes)]})]])
+      :body body})]])
 
-(defn app [_]
-  (-> view html str response (content-type "text/html")))
+(defn render [req view]
+  (-> (if (get-in req [:headers "hx-request"])
+        view
+        (layout view))
+      html str response (content-type "text/html")))
+
+(defroutes app
+  (GET "/" req (render req buttons-view))
+  (GET "/test" req (render req test-page))
+  (GET "/buttons" req (render req buttons-view))
+  (route/not-found "Not Found"))
 
 (defn -main []
-  (run-jetty (wrap-reload app {:dirs ["src" "../src"]}) {:port 3000}))
+  (run-jetty (->
+              #'app
+              (wrap-defaults site-defaults)
+              (wrap-reload  {:dirs ["src" "../src"]}))
+             {:port 3000}))

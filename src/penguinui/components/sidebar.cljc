@@ -6,11 +6,13 @@
                                       sidebar-toggle-icon]]))
 
 (defn sidebar-menu-item [{:keys [link icon title active?]}]
-  [:a {:href link
-       :class
-       (str/join " "
-                 ["flex items-center rounded-md gap-2 px-2 py-1.5 text-sm font-medium text-neutral-600 underline-offset-2 focus-visible:underline focus:outline-none dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white"
-                  (if active? "bg-black/10" "hover:bg-black/5 hover:text-neutral-900")])}
+  [:button {:hx-get link
+            :hx-push-url "true"
+            :hx-target "#body"
+            :class
+            (str/join " "
+                      ["flex items-center rounded-md gap-2 px-2 py-1.5 text-sm font-medium text-neutral-600 underline-offset-2 focus-visible:underline focus:outline-none dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white"
+                       (if active? "bg-black/10" "hover:bg-black/5 hover:text-neutral-900")])}
    icon
    [:span title]
    (when active?
@@ -114,5 +116,5 @@
              :profile profile
              :profile-menu profile-menu})
     [:div {:id "main-content" :class "p-4"}
-     [:div {:class "overflow-y-auto"}
+     [:div#body {:class "overflow-y-auto"}
       body]]]])
