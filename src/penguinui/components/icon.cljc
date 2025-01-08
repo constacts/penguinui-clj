@@ -106,3 +106,17 @@
 (def right-arrow-icon
   [:svg {:xmlns "http://www.w3.org/2000/svg", :fill "none", :viewbox "0 0 24 24", :aria-hidden "true", :stroke-width "2", :stroke "currentColor", :class "size-4"}
    [:path {:stroke-linecap "round", :stroke-linejoin "round", :d "m8.25 4.5 7.5 7.5-7.5 7.5"}]])
+
+(def close-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg"
+    :viewBox "0 0 24 24"
+    :aria-hidden "true"
+    :stroke "currentColor"
+    :fill "none"
+    :stroke-width "1.4"
+    :class "w-5 h-5"}
+   [:path
+    {:stroke-linecap "round"
+     :stroke-linejoin "round"
+     :d "M6 18L18 6M6 6l12 12"}]])
