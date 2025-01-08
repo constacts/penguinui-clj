@@ -1,18 +1,20 @@
 (ns sample.core
   (:gen-class)
   (:require
-   [hiccup2.core :refer [html]]
    [compojure.core :refer [defroutes GET]]
    [compojure.route :as route]
+   [hiccup2.core :refer [html]]
    [penguinui.components.combobox :refer [combobox]]
    [penguinui.components.icon :refer [icon1 icon2 icon3 icon4 icon5 icon6
-                                      icon7 payment-icon penguin-logo settings-icon sign-out-icon
-                                      person-icon loading-icon penguin-logo plus-icon]]
+                                      loading-icon payment-icon penguin-logo
+                                      penguin-logo person-icon plus-icon
+                                      settings-icon sign-out-icon]]
    [penguinui.components.sidebar :refer [sidebar]]
    [penguinui.core :refer [button]]
+   [penguinui.table :refer [table]]
    [ring.adapter.jetty :refer [run-jetty]]
+   [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
    [ring.middleware.reload :refer [wrap-reload]]
-   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [ring.util.response :refer [content-type response]]))
 
 (defn buttons []
@@ -107,7 +109,7 @@
     (button {} :success.fab loading-icon "Success")]])
 
 (defn comboboxes []
-  [:div.flex.flex-col.gap-4 {:x-data "{ options: [{value:'Agriculture', label:'Agriculture'}, {value:'Construction', label:'Construction'}]}"}
+  [:div.flex.flex-col.gap-4 {:x-data "{ comboboxOptions: [{value:'Agriculture', label:'Agriculture'}, {value:'Construction', label:'Construction'}]}"}
    [:h1.text-2xl.font-bold "Combobox"]
    (combobox "Industry")])
 
@@ -162,13 +164,19 @@
   [:h1 "AI Interface"])
 
 (def display-page
-  [:h1 "Display"])
+  [:div.flex.flex-col.gap-12.h-full
+   (table {:cols [{:id "CustomerID" :label "CustomerID"}
+                  {:id "Name" :label "Name"}
+                  {:id "Email" :label "Email"}
+                  {:id "Membership" :label "Membership"}]
+           :rows [{"CustomerID" "2335", "Name" "Alice Brown" "Email" "alice.brown@gmail.com" "Membership" "Silver"}
+                  {"CustomerID" "2338", "Name" "Bob Johnson" "Email" "johnson.bob@outlook.com" "Membership" "Gold"}]})])
 
 (def feedback-page
   [:h1 "Feedback"])
 
 (def input-page
-  [:div.flex.flex-col.gap-12
+  [:div.flex.flex-col.gap-12.h-full
    (buttons)
    (outline-buttons)
    (ghost-buttons)

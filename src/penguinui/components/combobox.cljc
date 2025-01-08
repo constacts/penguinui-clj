@@ -14,11 +14,11 @@
          this.$refs.hiddenTextField.value = option.value
      },
      highlightFirstMatchingOption(pressedKey) {
-         const option = this.options.find((item) =>
+         const option = this.comboboxOptions.find((item) =>
              item.label.toLowerCase().startsWith(pressedKey.toLowerCase()),
          )
          if (option) {
-             const index = this.options.indexOf(option)
+             const index = this.comboboxOptions.indexOf(option)
              const allOptions = document.querySelectorAll('.combobox-option')
              if (allOptions[index]) {
                  allOptions[index].focus()
@@ -28,6 +28,9 @@
    }")
 
 (defn combobox
+  "Combobox component
+  
+   x-data: { comboboxOptions: [{value: string, label: string }] }"
   ([]
    (combobox nil))
   ([label]
@@ -66,7 +69,7 @@
            :id "industriesList"
            :class "absolute z-10 left-0 top-11 flex max-h-44 w-full flex-col overflow-hidden overflow-y-auto border-neutral-300 bg-neutral-50 py-1.5 dark:border-neutral-700 dark:bg-neutral-900 rounded-md border"
            :aria-label "industries list"}
-      [:template {:x-for "(item, index) in options"
+      [:template {:x-for "(item, index) in comboboxOptions"
                   :x-bind:key "item.value"}
        [:li {:class "combobox-option inline-flex cursor-pointer justify-between gap-6 bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/5 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white"
              :role "option"
