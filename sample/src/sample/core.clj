@@ -111,7 +111,7 @@
    [:h1.text-2xl.font-bold "Combobox"]
    (combobox "Industry")])
 
-(defn layout [title body]
+(defn layout [{:keys [title link view]}]
   [:html
    [:head
     [:meta {:charset "UTF-8"}]
@@ -127,27 +127,32 @@
     [:script {:src "https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js" :defer true}]
     [:script {:src "//unpkg.com/alpinejs" :defer true}]]
    [:body {:style "font-family: 'Lato', sans-serif;"}
-    (sidebar
-     {:logo {:link "/" :el penguin-logo}
-      :selected-menu-title title
-      :side-menu [{:link "/ai-interface" :icon icon2 :title "AI Interface"}
-                  {:link "/display" :icon icon3 :title "Display"}
-                  {:link "/feedback" :icon icon4 :title "Feedback"}
-                  {:link "/inputs" :icon icon5 :title "Input"}
-                  {:link "/navigation" :icon icon6 :title "Navigation"}]
-      :profile-menu {:groups [{:items [{:link "#" :icon person-icon :title "Profile"}]}
-                              {:items [{:link "#" :icon settings-icon :title "Settings"}
-                                       {:link "#" :icon payment-icon :title "Payments"}]}
-                              {:items [{:link "#" :icon sign-out-icon :title "Sign Out"}]}]}
-      :profile {:avatar-url "https://penguinui.s3.amazonaws.com/component-assets/avatar-7.webp"
-                :name "Alex Martinez"
-                :username "@alexmartinez"}
-      :body body})]])
+    [:div {:x-data (str "{ sidebarSelectedItem: {title: '" title "', link: '" link "' } }")}
+     [:div {:x-data "{ breadcrumbItems: [] }"
+            :x-effect "breadcrumbItems = [sidebarSelectedItem]"}
+      [:div {:x-data "{ searchQuery:'' }"
+             :x-effect "console.log(searchQuery)"}
+       (sidebar
+        {:logo {:link "/" :el penguin-logo}
+         :side-menu [{:link "/" :icon icon1 :title "Home"}
+                     {:link "/ai-interface" :icon icon2 :title "AI Interface"}
+                     {:link "/display" :icon icon3 :title "Display"}
+                     {:link "/feedback" :icon icon4 :title "Feedback"}
+                     {:link "/inputs" :icon icon5 :title "Input"}
+                     {:link "/navigation" :icon icon6 :title "Navigation"}]
+         :profile-menu {:groups [{:items [{:link "#" :icon person-icon :title "Profile"}]}
+                                 {:items [{:link "#" :icon settings-icon :title "Settings"}
+                                          {:link "#" :icon payment-icon :title "Payments"}]}
+                                 {:items [{:link "#" :icon sign-out-icon :title "Sign Out"}]}]}
+         :profile {:avatar-url "https://penguinui.s3.amazonaws.com/component-assets/avatar-7.webp"
+                   :name "Alex Martinez"
+                   :username "@alexmartinez"}
+         :body view})]]]]])
 
-(defn render [req title view]
+(defn render [req page]
   (-> (if (get-in req [:headers "hx-request"])
-        view
-        (layout title view))
+        (:view page)
+        (layout page))
       html str response (content-type "text/html")))
 
 (def home-page
@@ -175,13 +180,21 @@
 (def navigation-page
   [:h1 "Navigation"])
 
+(def pages
+  {:home {:title "Home" :link "/" :view home-page}
+   :ai-interface {:title "AI Interface" :link "/ai-interface" :view ai-interface-page}
+   :display {:title "Display" :link "/display" :view display-page}
+   :feedback {:title "Feedback" :link "/feedback" :view feedback-page}
+   :input {:title "Input" :link "/inputs" :view input-page}
+   :navigation {:title "Navigation" :link "/navigation" :view navigation-page}})
+
 (defroutes app
-  (GET "/" req (render req "Home" home-page))
-  (GET "/ai-interface" req (render req "AI Interface" ai-interface-page))
-  (GET "/display" req (render req "Display" display-page))
-  (GET "/feedback" req (render req "Feedback" feedback-page))
-  (GET "/inputs" req (render req "Input" input-page))
-  (GET "/navigation" req (render req "Navigation" navigation-page))
+  (GET (-> (pages :home) :link) req (render req (pages :home)))
+  (GET (-> (pages :ai-interface) :link) req (render req (pages :ai-interface)))
+  (GET (-> (pages :display) :link) req (render req (pages :display)))
+  (GET (-> (pages :feedback) :link) req (render req (pages :feedback)))
+  (GET (-> (pages :input) :link) req (render req (pages :input)))
+  (GET (-> (pages :navigation) :link) req (render req (pages :navigation)))
   (route/not-found "Not Found"))
 
 (defn -main []
