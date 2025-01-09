@@ -1,4 +1,4 @@
-(ns penguinui.table)
+(ns penguinui.components.table)
 
 (defn table
   "Table component

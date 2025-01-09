@@ -2,22 +2,8 @@
   (:require
    [clojure.string :as str]
    [penguinui.components.breadcrumb :refer [breadcrumb]]
-   [penguinui.components.icon :refer [search-icon
-                                      sidebar-toggle-icon]]))
-
-(defn search
-  "Search component
-   
-   x-data: { searchQuery: string }"
-  []
-  [:div {:class "relative my-4 flex w-full max-w-xs flex-col gap-1 text-neutral-600 dark:text-neutral-300"}
-   search-icon
-   [:input {:type "search"
-            :class "w-full border border-neutral-300 rounded-md bg-white px-2 py-1.5 pl-9 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 dark:border-neutral-700 dark:bg-neutral-950/50 dark:focus-visible:outline-white"
-            :name "search"
-            :x-model "searchQuery"
-            :aria-label "Search"
-            :placeholder "Search"}]])
+   [penguinui.components.icon :refer [sidebar-toggle-icon]]
+   [penguinui.components.search-input :refer [search-input]]))
 
 (defn logo [{:keys [link el]}]
   [:a {:href link, :class "ml-2 w-fit text-2xl font-bold text-neutral-900 dark:text-white"}
@@ -84,17 +70,15 @@
   "Sidebar menu item component
    
    x-data: { sidebarSelectedItem: {:title string, :link string} }"
-  [{:keys [link icon title active?]}]
-  [:button {:hx-get link
-            :hx-push-url "true"
-            :hx-target "#body"
-            :x-data (str "{ active() { return sidebarSelectedItem.title === '" title "' } }")
-            "@click" (str "sidebarSelectedItem = {title: '" title "', link: '" link "' }")
-            ":class" "active() ? 'bg-black/10' : 'hover:bg-black/5 hover:text-neutral-900'"
-            :class
-            (str/join " "
-                      ["flex items-center rounded-md gap-2 px-2 py-1.5 text-sm font-medium text-neutral-600 underline-offset-2 focus-visible:underline focus:outline-none dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white"
-                       (if active? "bg-black/10" "hover:bg-black/5 hover:text-neutral-900")])}
+  [{:keys [props icon title active?]}]
+  [:button (merge {:x-data (str "{ active() { return sidebarSelectedItem.title === '" title "' } }")
+                   "@click" (str "sidebarSelectedItem = {title: '" title "' }")
+                   ":class" "active() ? 'bg-black/10' : 'hover:bg-black/5 hover:text-neutral-900'"
+                   :class
+                   (str/join " "
+                             ["flex items-center rounded-md gap-2 px-2 py-1.5 text-sm font-medium text-neutral-600 underline-offset-2 focus-visible:underline focus:outline-none dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white"
+                              (if active? "bg-black/10" "hover:bg-black/5 hover:text-neutral-900")])}
+                  props)
    icon
    [:span title]
    [:div {:x-show "active()"}
@@ -106,7 +90,7 @@
          :x-bind:class "sidebarIsOpen ? 'translate-x-0' : '-translate-x-60'"
          :aria-label "sidebar navigation"}
    (logo (:logo opts))
-   (search)
+   (search-input)
    [:div {:class "flex flex-col gap-2 overflow-y-auto pb-6"}
     (for [item items]
       (sidebar-menu-item item))]])
