@@ -38,8 +38,8 @@
     [:div {:x-data (str "{ sidebarSelectedItem: {title: '" title "', link: '" link "' } }")}
      [:div {:x-data "{ breadcrumbItems: [] }"
             :x-effect "breadcrumbItems = [sidebarSelectedItem]"}
-      [:div {:x-data "{ searchQuery:'' }"
-             :x-effect "console.log(searchQuery)"}
+      [:div {:x-data "{ sideMenuSearchQuery:'' }"
+             :x-init "$watch('sideMenuSearchQuery', value => console.log(value))"}
        (sidebar
         {:logo {:link "/" :el penguin-logo}
          :side-menu [{:icon icon1 :title "Home" :props {:hx-get "/" :hx-push-url "true" :hx-target "#body"}}

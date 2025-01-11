@@ -105,9 +105,31 @@
 (defn text-inputs []
   [:div.flex.flex-col.gap-4
    [:h1.text-2xl.font-bold "Text Input"]
-   (text-input)
-   [:div
-    (search-input)]])
+   [:div {:x-data "{ sampleText: '', sampleTextState: 'default', sampleDesc: '' }"
+          :x-init "$watch('sampleText', value => { 
+                     console.log(sampleTextState);
+                     if (value.length > 5) { 
+                       sampleTextState = 'error';
+                       sampleDesc = 'Error: Name is too long';
+                     }
+                     else if (value.length > 3) {
+                       sampleTextState = 'success';
+                       sampleDesc = 'This is a success description';
+                     }
+                     else { 
+                       sampleTextState = 'default';
+                     }
+                   })"}
+    (text-input {:id "sample"
+                 :state-data "sampleTextState"
+                 :name "sample"
+                 :label "Name"
+                 :x-model "sampleText"
+                 :desc-data "sampleDesc"
+                 :placeholder "Enter your name"
+                 :desc "This is a description"})]
+   [:div {:x-data "{ sampleSearchQuery: '' }"}
+    (search-input {:x-model "sampleSearchQuery"})]])
 
 (def input-page
   [:div.flex.flex-col.gap-12.h-full.pl-2

@@ -90,7 +90,7 @@
          :x-bind:class "sidebarIsOpen ? 'translate-x-0' : '-translate-x-60'"
          :aria-label "sidebar navigation"}
    (logo (:logo opts))
-   (search-input)
+   (search-input {:x-model "sideMenuSearchQuery"})
    [:div {:class "flex flex-col gap-2 overflow-y-auto pb-6"}
     (for [item items]
       (sidebar-menu-item item))]])
