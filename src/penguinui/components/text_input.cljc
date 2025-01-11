@@ -27,12 +27,13 @@
    - name: string
    - label: string
    - placeholder: string
+   - password?: boolean
    
    x-data:
    - state: 'default' | 'success' | 'error'
    - text: string
    - desc: string"
-  [{:keys [name label placeholder]}]
+  [{:keys [name label placeholder password?]}]
   [:div {:x-id "['text-input']"
          :class "flex w-full max-w-xs flex-col gap-1 text-neutral-600"}
    (when label
@@ -47,7 +48,7 @@
       label])
    [:input
     {":id" "$id('text-input')"
-     :type "text"
+     :type (if password? "password" "text")
      :x-model "text"
      :placeholder placeholder
      :class "w-full rounded-md border bg-neutral-50 px-2 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 "

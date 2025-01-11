@@ -120,10 +120,14 @@
                        state = 'default';
                      }
                    })"}
-    (text-input {:id "sample"
-                 :name "sample"
+    (text-input {:name "sample"
                  :label "Name"
                  :placeholder "Enter your name"})]
+   [:div {:x-data "{ text: '', desc: '', state: 'default' }"}
+    (text-input {:name "password"
+                 :label "Password"
+                 :placeholder "Enter your password"
+                 :password? true})]
    [:div {:x-data "{ searchQuery: '' }"}
     (search-input)]])
 
