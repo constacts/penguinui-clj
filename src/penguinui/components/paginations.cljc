@@ -3,10 +3,7 @@
    [penguinui.components.icon :refer [ellipsis-icon left-arrow-icon
                                       right-arrow-icon]]))
 
-""
-"disabled:cursor-not-allowed"
-
-(defn- page-button [{:keys [page page-change-event]}]
+(defn- page-button [{:keys [page-change-event]}]
   [:li
    [:button
     {"@click" (str "currentPage = page; $dispatch('" page-change-event "', { page: page });")
@@ -38,7 +35,7 @@
    - prev-event: string (lowercase)
    - next-event: string (lowercase)
    - page-change-event: string (lowercase)
-   
+   - max-visible-pages: number (default 10)
    x-data:
    - currentPage: number"
   [{:keys [page-count prev-event next-event page-change-event max-visible-pages]}]
