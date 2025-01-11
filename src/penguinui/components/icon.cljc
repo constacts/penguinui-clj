@@ -185,3 +185,18 @@
      :stroke-linejoin "round",
      :d
      "M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"}]])
+
+(def checkbox-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg"
+    :viewBox "0 0 24 24"
+    :aria-hidden "true"
+    :stroke "currentColor"
+    :fill "none"
+    :stroke-width "4"
+    :class
+    "pointer-events-none invisible absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 text-neutral-100 peer-checked:visible dark:text-black"}
+   [:path
+    {:stroke-linecap "round"
+     :stroke-linejoin "round"
+     :d "M4.5 12.75l6 6 9-13.5"}]])
