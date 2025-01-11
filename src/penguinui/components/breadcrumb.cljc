@@ -5,6 +5,9 @@
 (defn breadcrumb
   "Breadcrumb component
    
+   arg keys:
+   - separator(optional): :splahs
+
    x-data: 
    - items: [{title: string, link: string}]"
   [{:keys [separator]}]

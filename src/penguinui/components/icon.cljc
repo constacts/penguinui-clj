@@ -144,3 +144,44 @@
    [:path
     {:d
      "M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"}]])
+
+(def left-arrow-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg",
+    :viewBox "0 0 20 20",
+    :fill "currentColor",
+    :aria-hidden "true",
+    :class "size-6"}
+   [:path
+    {:fill-rule "evenodd",
+     :d
+     "M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z",
+     :clip-rule "evenodd"}]])
+
+(def right-arrow-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg",
+    :viewBox "0 0 20 20",
+    :fill "currentColor",
+    :aria-hidden "true",
+    :class "size-6"}
+   [:path
+    {:fill-rule "evenodd",
+     :d
+     "M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z",
+     :clip-rule "evenodd"}]])
+
+(def ellipsis-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg",
+    :fill "none",
+    :viewBox "0 0 24 24",
+    :stroke-width "1.5",
+    :aria-hidden "true",
+    :stroke "currentColor",
+    :class "w-6 h-6"}
+   [:path
+    {:stroke-linecap "round",
+     :stroke-linejoin "round",
+     :d
+     "M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"}]])

@@ -47,7 +47,7 @@
                      {:icon icon3 :title "Display" :props {:hx-get "/display" :hx-push-url "true" :hx-target "#body"}}
                      {:icon icon4 :title "Feedback" :props {:hx-get "/feedback" :hx-push-url "true" :hx-target "#body"}}
                      {:icon icon5 :title "Input" :props {:hx-get "/inputs" :hx-push-url "true" :hx-target "#body"}}
-                     {:link "/navigation" :icon icon6 :title "Navigation"}]
+                     {:icon icon6 :title "Navigation" :props {:hx-get "/navigation" :hx-push-url "true" :hx-target "#body"}}]
          :profile-menu {:groups [{:items [{:link "#" :icon person-icon :title "Profile"}]}
                                  {:items [{:link "#" :icon settings-icon :title "Settings"}
                                           {:link "#" :icon payment-icon :title "Payments"}]}
