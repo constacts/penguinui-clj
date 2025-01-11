@@ -4,7 +4,7 @@
    [penguinui.components.combobox :refer [combobox]]
    [penguinui.components.icon :refer [loading-icon plus-icon]]
    [penguinui.components.search-input :refer [search-input]]
-   [penguinui.components.text-input :refer [text-input]]))
+   [penguinui.components.text-input :refer [text-input textarea]]))
 
 (defn buttons []
   [:div.flex.flex-col.gap-4
@@ -128,6 +128,11 @@
                  :label "Password"
                  :placeholder "Enter your password"
                  :password? true})]
+   [:div {:x-data "{ text: '', desc: '', state: 'default' }"}
+    (textarea {:name "textarea"
+               :label "Textarea"
+               :placeholder "Enter your text"
+               :rows 5})]
    [:div {:x-data "{ searchQuery: '' }"}
     (search-input)]])
 
