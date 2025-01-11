@@ -59,7 +59,8 @@
   [:nav {:class "sticky top-0 z-10 flex items-center justify-between border-b border-neutral-300 bg-neutral-50 px-4 py-2 dark:border-neutral-700 dark:bg-neutral-900"
          :aria-label "top navibation bar"}
    (sidemenu-toggle-button)
-   (breadcrumb {})
+   [:div {:x-data "{ get items() { return breadcrumbItems; } }"}
+    (breadcrumb {})]
    [:div {:x-data "{ userDropdownIsOpen: false }"
           :class "relative"
           :x-on:keydown.esc.window "userDropdownIsOpen = false"}
@@ -90,13 +91,18 @@
          :x-bind:class "sidebarIsOpen ? 'translate-x-0' : '-translate-x-60'"
          :aria-label "sidebar navigation"}
    (logo (:logo opts))
-   (search-input {:x-model "sideMenuSearchQuery"})
+   (search-input)
    [:div {:class "flex flex-col gap-2 overflow-y-auto pb-6"}
     (for [item items]
       (sidebar-menu-item item))]])
 
 (defn sidebar
-  "Sidebar component"
+  "Sidebar component
+   
+   x-data:
+   - searchQuery: string, 
+   - breadcrumbItems: [{title: string, link: string}] 
+   "
   [{:keys [body logo profile profile-menu] :as opts}]
   [:div {:x-data (str "{ sidebarIsOpen: false }") :class "relative flex w-full flex-col md:flex-row"}
    [:a {:class "sr-only" :href "#main-content"}
