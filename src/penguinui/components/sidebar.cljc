@@ -85,25 +85,29 @@
    [:div {:x-show "active()"}
     [:span {:class "sr-only"} "active"]]])
 
-(defn side-menu [{:keys [items] :as opts}]
+(defn side-menu [{:keys [items search?] :as opts}]
   [:nav {:x-cloak true
          :class "fixed left-0 z-30 flex h-svh w-60 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 p-4 transition-transform duration-300 md:w-64 md:translate-x-0 md:relative dark:border-neutral-700 dark:bg-neutral-900"
          :x-bind:class "sidebarIsOpen ? 'translate-x-0' : '-translate-x-60'"
          :aria-label "sidebar navigation"}
    (logo (:logo opts))
-   (search-input)
-   [:div {:class "flex flex-col gap-2 overflow-y-auto pb-6"}
+   (when search?
+     (search-input))
+   [:div {:class (str "flex flex-col gap-2 overflow-y-auto pb-6" (when-not search? " pt-6"))}
     (for [item items]
       (sidebar-menu-item item))]])
 
 (defn sidebar
   "Sidebar component
    
+   arg keys:
+   - search? (optional): boolean, default false
+
    x-data:
    - searchQuery: string, 
    - breadcrumbItems: [{title: string, link: string}] 
    "
-  [{:keys [body logo profile profile-menu] :as opts}]
+  [{:keys [body logo profile profile-menu search?] :as opts}]
   [:div {:x-data (str "{ sidebarIsOpen: false }") :class "relative flex w-full flex-col md:flex-row"}
    [:a {:class "sr-only" :href "#main-content"}
     "skip to the main content"]
@@ -114,6 +118,7 @@
           :x-on:click "sidebarIsOpen = false"
           :x-transition.opacity ""}]
    (side-menu {:logo logo
+               :search? search?
                :items (:side-menu opts)})
    [:div {:class "h-svh w-full overflow-y-auto bg-white dark:bg-neutral-950"}
     (navbar {:profile profile

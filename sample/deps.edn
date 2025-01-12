@@ -6,7 +6,7 @@
         ring/ring-jetty-adapter {:mvn/version "1.13.0"}
         hiccup/hiccup {:mvn/version "2.0.0-RC4"}
         compojure/compojure {:mvn/version "1.7.1"}
-        constacts/penguin-clj {:local/root ".."}}
+        constacts/penguinui-clj {:local/root ".."}}
  :aliases
  {:run-m {:main-opts ["-m" "sample.core"]}
   :build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.5"}}
