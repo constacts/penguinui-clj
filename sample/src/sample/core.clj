@@ -4,10 +4,14 @@
    [compojure.core :refer [defroutes GET]]
    [compojure.route :as route]
    [hiccup2.core :refer [html]]
+   [penguinui.components.breadcrumb :refer [breadcrumb]]
    [penguinui.components.icon :refer [icon1 icon2 icon3 icon4 icon5 icon6
                                       payment-icon penguin-logo penguin-logo
                                       person-icon settings-icon sign-out-icon]]
-   [penguinui.components.sidebar :refer [sidebar]]
+   [penguinui.components.layout :refer [layout]]
+   [penguinui.components.navbar :refer [profile]]
+   [penguinui.components.search-input :refer [search-input]]
+   [penguinui.components.sidebar :refer [logo sidebar-menu-item]]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
    [ring.middleware.reload :refer [wrap-reload]]
@@ -19,7 +23,7 @@
    [sample.page.input :refer [input-page]]
    [sample.page.navigation :refer [navigation-page]]))
 
-(defn layout [{:keys [title link view]}]
+(defn main-view [{:keys [title link view]}]
   [:html
    [:head
     [:meta {:charset "UTF-8"}]
@@ -40,27 +44,31 @@
             :x-effect "breadcrumbItems = [sidebarSelectedItem];"}
       [:div {:x-data "{ searchQuery:'' }"
              :x-init "$watch('searchQuery', value => console.log(value))"}
-       (sidebar
-        {:logo {:link "/" :el penguin-logo}
-         :side-menu [{:icon icon1 :title "Home" :props {:hx-get "/" :hx-push-url "true" :hx-target "#body"}}
-                     {:icon icon2 :title "AI Interface" :props {:hx-get "/ai-interface" :hx-push-url "true" :hx-target "#body"}}
-                     {:icon icon3 :title "Display" :props {:hx-get "/display" :hx-push-url "true" :hx-target "#body"}}
-                     {:icon icon4 :title "Feedback" :props {:hx-get "/feedback" :hx-push-url "true" :hx-target "#body"}}
-                     {:icon icon5 :title "Input" :props {:hx-get "/inputs" :hx-push-url "true" :hx-target "#body"}}
-                     {:icon icon6 :title "Navigation" :props {:hx-get "/navigation" :hx-push-url "true" :hx-target "#body"}}]
-         :profile-menu {:groups [{:items [{:link "#" :icon person-icon :title "Profile"}]}
-                                 {:items [{:link "#" :icon settings-icon :title "Settings"}
-                                          {:link "#" :icon payment-icon :title "Payments"}]}
-                                 {:items [{:link "#" :icon sign-out-icon :title "Sign Out"}]}]}
-         :profile {:avatar-url "https://penguinui.s3.amazonaws.com/component-assets/avatar-7.webp"
-                   :name "Alex Martinez"
-                   :username "@alexmartinez"}
-         :body view})]]]]])
+       (layout {:sidebar-items [(logo {:link "/" :el penguin-logo})
+                                (search-input)
+                                (sidebar-menu-item {:icon icon1
+                                                    :title "Home"
+                                                    :props {:hx-get "/" :hx-push-url "true" :hx-target "#body"}})
+                                (sidebar-menu-item {:icon icon2 :title "AI Interface" :props {:hx-get "/ai-interface" :hx-push-url "true" :hx-target "#body"}})
+                                (sidebar-menu-item {:icon icon3 :title "Display" :props {:hx-get "/display" :hx-push-url "true" :hx-target "#body"}})
+                                (sidebar-menu-item {:icon icon4 :title "Feedback" :props {:hx-get "/feedback" :hx-push-url "true" :hx-target "#body"}})
+                                (sidebar-menu-item {:icon icon5 :title "Input" :props {:hx-get "/inputs" :hx-push-url "true" :hx-target "#body"}})
+                                (sidebar-menu-item {:icon icon6 :title "Navigation" :props {:hx-get "/navigation" :hx-push-url "true" :hx-target "#body"}})]
+                :navbar-items [[:div {:x-data "{ get items() { return breadcrumbItems; } }"}
+                                (breadcrumb {})]
+                               (profile {:avatar-url "https://penguinui.s3.amazonaws.com/component-assets/avatar-7.webp"
+                                         :name "Alex Martinez"
+                                         :username "@alexmartinez"
+                                         :menu-items {:groups [{:items [{:link "#" :icon person-icon :title "Profile"}]}
+                                                               {:items [{:link "#" :icon settings-icon :title "Settings"}
+                                                                        {:link "#" :icon payment-icon :title "Payments"}]}
+                                                               {:items [{:link "#" :icon sign-out-icon :title "Sign Out"}]}]}})]
+                :body view})]]]]])
 
 (defn render [req page]
   (-> (if (get-in req [:headers "hx-request"])
         (:view page)
-        (layout page))
+        (main-view page))
       html str response (content-type "text/html")))
 
 (def pages
