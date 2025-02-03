@@ -8,7 +8,7 @@
 
 (defn buttons []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "Buttons"]
+   [:h1.text-2xl.font-medium "Buttons"]
    [:div.flex.gap-4
     (button {:onClick "console.log('clicked')"} :default "Primary")
     (button {} :secondary "Secondary")
@@ -21,7 +21,7 @@
 
 (defn outline-buttons []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "Outline Buttons"]
+   [:h1.text-2xl.font-medium "Outline Buttons"]
    [:div.flex.gap-4
     (button {} :outline "Primary")
     (button {} :secondary.outline "Secondary")
@@ -34,7 +34,7 @@
 
 (defn ghost-buttons []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "Ghost Buttons"]
+   [:h1.text-2xl.font-medium "Ghost Buttons"]
    [:div.flex.gap-4
     (button {} :ghost "Primary")
     (button {} :secondary.ghost "Secondary")
@@ -47,7 +47,7 @@
 
 (defn button-with-icon []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "Button with Icon"]
+   [:h1.text-2xl.font-medium "Button with Icon"]
    [:div.flex.gap-4
     (button {} :default "Primary")
     (button {} :secondary "Secondary")
@@ -60,7 +60,7 @@
 
 (defn button-with-icon-right []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "Button with Icon Right"]
+   [:h1.text-2xl.font-medium "Button with Icon Right"]
    [:div.flex.gap-4
     (button {} :icon-plus "Primary" plus-icon)
     (button {} :secondary plus-icon "Secondary")
@@ -73,7 +73,7 @@
 
 (defn button-with-icon-loading []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "Button with Icon Loading"]
+   [:h1.text-2xl.font-medium "Button with Icon Loading"]
    [:div.flex.gap-4
     (button {} :icon-loading loading-icon "Primary")
     (button {} :secondary "Secondary")
@@ -86,7 +86,7 @@
 
 (defn fab-button []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "FAB Button"]
+   [:h1.text-2xl.font-medium "FAB Button"]
    [:div.flex.gap-4
     (button {} :fab loading-icon "Primary")
     (button {} :secondary.fab loading-icon "Secondary")
@@ -99,12 +99,12 @@
 
 (defn comboboxes []
   [:div.flex.flex-col.gap-4 {:x-data "{ comboboxOptions: [{value:'Agriculture', label:'Agriculture'}, {value:'Construction', label:'Construction'}]}"}
-   [:h1.text-2xl.font-bold "Combobox"]
+   [:h1.text-2xl.font-medium "Combobox"]
    (combobox "Industry")])
 
 (defn text-inputs []
   [:div.flex.flex-col.gap-4
-   [:h1.text-2xl.font-bold "Text Input"]
+   [:h1.text-2xl.font-medium "Text Input"]
    [:div {:x-data "{ text: '', desc: '', state: 'default' }"
           :x-init "$watch('text', value => { 
                      console.log(state);

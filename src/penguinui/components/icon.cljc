@@ -200,3 +200,58 @@
     {:stroke-linecap "round"
      :stroke-linejoin "round"
      :d "M4.5 12.75l6 6 9-13.5"}]])
+
+(def error-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg"
+    :viewBox "0 0 20 20"
+    :fill "currentColor"
+    :class "size-6"
+    :aria-hidden "true"}
+   [:path
+    {:fill-rule "evenodd"
+     :d
+     "M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z"
+     :clip-rule "evenodd"}]])
+
+(def close-alert-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg"
+    :viewBox "0 0 24 24"
+    :aria-hidden "true"
+    :stroke "currentColor"
+    :fill "none"
+    :stroke-width "2.5"
+    :class "size-4 shrink-0"}
+   [:path
+    {:stroke-linecap "round"
+     :stroke-linejoin "round"
+     :d "M6 18L18 6M6 6l12 12"}]])
+
+(def toast-error-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg"
+    :viewBox "0 0 20 20"
+    :fill "currentColor"
+    :class "size-5"
+    :aria-hidden "true"}
+   [:path
+    {:fill-rule "evenodd"
+     :d
+     "M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+     :clip-rule "evenodd"}]])
+
+(def close-toast-icon
+  [:svg
+   {:xmlns "http://www.w3.org/2000/svg viewBox="
+    :0 ""
+    :24 ""
+    :stroke "currentColor"
+    :fill "none"
+    :stroke-width "2"
+    :class "size-5 shrink-0"
+    :aria-hidden "true"}
+   [:path
+    {:stroke-linecap "round"
+     :stroke-linejoin "round"
+     :d "M6 18L18 6M6 6l12 12"}]])

@@ -20,7 +20,7 @@
      checkbox-icon]]])
 
 (defn check-td [row-id]
-  [:td {:x-id "['check']" :class "p-4"}
+  [:td {:x-id "['check']" :class "p-4 w-1"}
    [:label
     {":for" "$id('check')"
      :class
@@ -58,8 +58,9 @@
       (when checkable?
         (check-all-th rows))
       (for [col cols]
-        [:th {:scope "col" :class "p-4"} (:label col)])]]
+        [:th.font-medium {:scope "col" :class "p-4" :width (:width col)} (:label col)])]]
     [:tbody {:class "divide-y divide-neutral-300 dark:divide-neutral-700"}
+     (when-not (seq rows) [:tr [:td.p-4.text-center {:colspan (inc (count cols))} "No items"]])
      (for [row rows]
        [:tr
         (when checkable?

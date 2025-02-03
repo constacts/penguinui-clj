@@ -20,9 +20,10 @@
      return 'border-neutral-300';
    }")
 
-(defn- layout [{:keys [label]} el]
+(defn layout [{:keys [label limit]} el]
   [:div {:x-id "['text-input']"
-         :class "flex w-full max-w-xs flex-col gap-1 text-neutral-600"}
+         :x-data (str "{ get count() { return text.length + '/" limit "'} }")
+         :class "flex w-full flex-col gap-1 text-neutral-600"}
    (when label
      [:label
       {":for" "$id('text-input')"
@@ -34,11 +35,18 @@
        error-cross-icon]
       label])
    el
-   [:template {:x-if "desc !== ''"}
-    [:small
-     {:class "pl-0.5"
-      ":class" text-color}
-     [:span {:x-text "desc"}]]]])
+   [:div.flex.justify-between.pt-1
+    [:div
+     [:template {:x-if "desc !== ''"}
+      [:small
+       {:class "pl-0.5"
+        ":class" text-color}
+       [:span {:x-text "desc"}]]]]
+    (when limit
+      [:small
+       {:class "pl-0.5"
+        ":class" text-color}
+       [:span {:x-text "count"}]])]])
 
 (defn text-input
   "Text input component
@@ -56,13 +64,14 @@
   [{:keys [name placeholder password?] :as opts}]
   (layout opts
           [:input
-           {":id" "$id('text-input')"
-            :type (if password? "password" "text")
-            :x-model "text"
-            :placeholder placeholder
-            :class "w-full rounded-md border bg-neutral-50 px-2 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 "
-            ":class" border-color
-            :name name}]))
+           (merge opts
+                  {":id" "$id('text-input')"
+                   :type (if password? "password" "text")
+                   :x-model "text"
+                   :placeholder placeholder
+                   :class "w-full rounded-md border bg-neutral-50 px-2 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 "
+                   ":class" border-color
+                   :name name})]))
 
 (defn textarea
   "Text input component
@@ -75,9 +84,8 @@
    
    x-data:
    - state: 'default' | 'success' | 'error'
-   - text: string
    - desc: string"
-  [{:keys [name placeholder rows] :as opts}]
+  [{:keys [name placeholder rows value limit] :as opts}]
   (layout opts
           [:textarea
            {":id" "$id('text-input')"
@@ -85,5 +93,7 @@
             :name name
             :x-model "text"
             :rows (or rows 5)
+            :maxlength limit
             ":class" border-color
-            :placeholder placeholder}]))
+            :placeholder placeholder}
+           value]))

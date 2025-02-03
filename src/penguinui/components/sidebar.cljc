@@ -4,7 +4,7 @@
    [penguinui.components.icon :refer [sidebar-toggle-icon]]))
 
 (defn logo [{:keys [link el]}]
-  [:a {:href link, :class "ml-2 w-fit text-2xl font-bold text-neutral-900 dark:text-white"}
+  [:a {:href link :class "ml-2 w-fit text-2xl font-medium text-neutral-900 dark:text-white"}
    [:span {:class "sr-only"} "homepage"]
    el])
 
@@ -18,10 +18,10 @@
 (defn sidebar-menu-item
   "Sidebar menu item component
    
-   x-data: { sidebarSelectedItem: {:title string, :link string} }"
+   x-data: { selectedItem: {:title string, :link string} }"
   [{:keys [props icon title active?]}]
-  [:button (merge {:x-data (str "{ active() { return sidebarSelectedItem.title === '" title "' } }")
-                   "@click" (str "sidebarSelectedItem = {title: '" title "' }")
+  [:button (merge {:x-data (str "{ active() { return selectedItem && selectedItem.title === '" title "' } }")
+                  ;;  "@click" (str "selectedItem = {title: '" title "' }")
                    ":class" "active() ? 'bg-black/10' : 'hover:bg-black/5 hover:text-neutral-900'"
                    :class
                    (str/join " "

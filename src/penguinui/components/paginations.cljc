@@ -4,11 +4,11 @@
                                       right-arrow-icon]]))
 
 (defn- page-button [{:keys [page-change-event]}]
-  [:li
+  [:li {:x-from-template "true"}
    [:button
     {"@click" (str "currentPage = page; $dispatch('" page-change-event "', { page: page });")
      :class "flex size-6 items-center justify-center rounded-md p-1 text-neutral-600 dark:text-neutral-300 dark:hover:text-white"
-     ":class" (str "currentPage === page ? 'bg-black font-bold text-neutral-100' : 'hover:text-black'")
+     ":class" "currentPage === page ? 'bg-black font-medium text-white' : 'hover:text-black'"
      :aria-label "page 1"}
     [:span {:x-text "page"}]]])
 
@@ -57,7 +57,8 @@
         (page-button {:page-change-event page-change-event})]
        [:template {:x-if "pages[0] !== 1"}
         [:li ellipsis-icon]]
-       [:template {:x-for (str "page in pages")}
+       [:template {:x-for "page in pages"
+                   ":key" "page"}
         (page-button {:page-change-event page-change-event})]
        [:template {:x-if (str "pages[pages.length - 1] !== " page-count)}
         [:li ellipsis-icon]]

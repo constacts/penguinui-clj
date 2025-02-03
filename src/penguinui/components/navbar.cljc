@@ -13,7 +13,7 @@
             :alt "avatar"
             :aria-hidden "true"}])
    [:div {:class "hidden md:flex flex-col"}
-    [:span {:class "text-sm font-bold text-neutral-900 dark:text-white"} name]
+    [:span {:class "text-sm font-medium text-neutral-900 dark:text-white"} name]
     [:span {:class "text-xs" :aria-hidden "true"} username]
     [:span {:class "sr-only"} "profile settings"]]])
 

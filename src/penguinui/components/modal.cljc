@@ -15,7 +15,7 @@
     "@keydown.esc.window" "modalIsOpen = false"
     :aria-labelledby "defaultModalTitle"
     "@click.self" "modalIsOpen = false"
-    :x-cloak ""
+    :x-cloak true
     :aria-modal "true"
     :class
     "fixed inset-0 z-30 flex items-end justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"}
@@ -33,7 +33,7 @@
      [:h3
       {:id "defaultModalTitle"
        :class
-       "font-semibold tracking-wide text-neutral-900 dark:text-white"}
+       "font-medium tracking-wide text-neutral-900 dark:text-white"}
       title]
      [:button
       {"@click" "modalIsOpen = false" :aria-label "close modal"}
